@@ -6,9 +6,13 @@ var Canvas = require("./Canvas/Canvas.bs.js");
 
 var doomfacesImg = (require('./../assets/Doomfaces.png'));
 
+var earthSrc = (require('./../assets/Canvas_earth.png'));
+
 var elem = Curry._1(Canvas.getById, "canvas");
 
-var img = new Image();
+var earth = new Image();
+
+earth.src = earthSrc;
 
 var doomFaces = new Image();
 
@@ -26,27 +30,39 @@ function drawFace(ctx, image, sprite) {
   return /* () */0;
 }
 
+var t0 = window.Date.now();
+
 function wiggle(t) {
-  return Math.sin(t * Math.PI);
+  return 100 * Math.sin(2 * Math.PI * 2 * t / 6000);
 }
 
-function drawDoomFace() {
+function waggle(t) {
+  return 100 * Math.cos(2 * Math.PI * 2 * t / 6000);
+}
+
+function drawDoomFace(ctx, transformX, transformY) {
+  ctx.save();
+  ctx.translate(120, 110);
+  ctx.translate(transformX, transformY);
+  drawFace(ctx, doomFaces, norm);
+  ctx.restore();
+  return ctx;
+}
+
+function drawDoomFaceAnimation() {
   var ctx = elem.getContext("2d");
   ctx.globalCompositeOperation = "destination-over";
   ctx.imageSmoothingEnabled = false;
   ctx.clearRect(0, 0, 300, 300);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.fillRect(0, 0, 300, 300);
   ctx.save();
-  ctx.translate(150, 150);
-  var time = new Date();
-  time.getSeconds();
-  time.getMilliseconds();
-  drawFace(ctx, doomFaces, norm);
-  ctx.restore();
-  window.requestAnimationFrame(drawDoomFace);
-  return /* () */0;
+  var s = window.Date.now() - t0;
+  drawDoomFace(drawDoomFace(ctx, wiggle(s), 0), 0, waggle(s)).restore();
+  return window.requestAnimationFrame(drawDoomFaceAnimation);
 }
 
-window.requestAnimationFrame(drawDoomFace);
+window.requestAnimationFrame(drawDoomFaceAnimation);
 
 var smile = /* record */[
   /* sx */1,
@@ -70,14 +86,18 @@ var normRight = /* record */[
 ];
 
 exports.doomfacesImg = doomfacesImg;
+exports.earthSrc = earthSrc;
 exports.elem = elem;
-exports.img = img;
+exports.earth = earth;
 exports.doomFaces = doomFaces;
 exports.smile = smile;
 exports.norm = norm;
 exports.normLeft = normLeft;
 exports.normRight = normRight;
 exports.drawFace = drawFace;
+exports.t0 = t0;
 exports.wiggle = wiggle;
+exports.waggle = waggle;
 exports.drawDoomFace = drawDoomFace;
+exports.drawDoomFaceAnimation = drawDoomFaceAnimation;
 /* doomfacesImg Not a pure module */

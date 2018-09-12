@@ -22,6 +22,7 @@ let getById: string => canvasElement = [%bs.raw
 [@bs.send] external clearRect: (ctx, float, float, float, float) => unit = "";
 [@bs.send] external fillRect: (ctx, float, float, float, float) => unit = "";
 [@bs.send] external translate: (ctx, float, float) => unit = "";
+[@bs.send] external setTransform: (ctx,  float, float, float, float, float, float) => unit = "";
 [@bs.send] external rotate: (ctx, float) => unit = "";
 [@bs.set] external fillStyle: (ctx, string) => unit = "";
 [@bs.send] external drawImage: (ctx, imageElement, float, float) => unit = "";
@@ -31,7 +32,8 @@ let getById: string => canvasElement = [%bs.raw
 [@bs.set] external src: (imageElement, Js.t('a)) => unit = "";
 
 [@bs.new] external makeDate: unit => date = "Date";
+[@bs.val] external now: unit => float = "window.Date.now";
 [@bs.send] external getSeconds: date => float = "";
 [@bs.send] external getMilliseconds: date => float = "";
 
-[@bs.val] external requestAnimationFrame: (unit => unit) => animationFrameID = "window.requestAnimationFrame";
+[@bs.val] external requestAnimationFrame: (unit => animationFrameID) => animationFrameID = "window.requestAnimationFrame";

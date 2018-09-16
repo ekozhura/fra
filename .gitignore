@@ -29,3 +29,5 @@ node_modules/
 dist/
 .vscode/
 .cache
+.idea
+yarn.lock

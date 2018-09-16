@@ -14,7 +14,7 @@ let andThen: (transform, transform) => transform =
   (transformA, transformB) => ComposedTransform(transformA, transformB);
 let saveT: transform => transform = transform => WrappedTransform(transform);
 
-let (<->) = andThen;
+/*let (<->) = andThen;*/
 
 let rec runSingleTransform: (ctx, transform) => unit =
   (ctx, transform) =>
@@ -22,7 +22,7 @@ let rec runSingleTransform: (ctx, transform) => unit =
     | Translate(x, y) => ctx->translate(x, y)
     | RenderImage(el) => ctx->drawImage(el, 0., 0.)
     | RenderSprite(image, sprite) =>
-      ctx->drawImageSprite(image, sprite.sx, sprite.sy, sprite.sw, sprite.sh, 0., 0., sprite.sw, sprite.sh)
+      ctx->drawImageSprite(image, sprite.sx, sprite.sy, sprite.sw, sprite.sh, 0., 0., sprite.dw, sprite.dh)
     | ComposedTransform(transformA, transformB) =>
       runSingleTransform(ctx, transformA);
       runSingleTransform(ctx, transformB);

@@ -18,21 +18,27 @@ var straight = /* record */[
   /* sx */212,
   /* sy */1,
   /* sw */49,
-  /* sh */62
+  /* sh */62,
+  /* dw */49,
+  /* dh */62
 ];
 
 var right = /* record */[
   /* sx */160,
   /* sy */1,
   /* sw */49,
-  /* sh */62
+  /* sh */62,
+  /* dw */49,
+  /* dh */62
 ];
 
 var left = /* record */[
   /* sx */264,
   /* sy */1,
   /* sw */49,
-  /* sh */62
+  /* sh */62,
+  /* dw */49,
+  /* dh */62
 ];
 
 var t0 = window.Date.now();
@@ -45,38 +51,63 @@ function waggle(t) {
   return 60 * Math.cos(2 * Math.PI * 2 * t / 6000);
 }
 
-function goThroughSprites(t, n) {
+function goThroughSprites(arr, t, n) {
   var index = Caml_int32.mod_(t, n);
-  var image = Caml_array.caml_array_get(/* array */[
-        left,
-        straight,
-        right,
-        straight
-      ], index);
-  return Transform.drawSprite(doomFaces, image);
+  return Caml_array.caml_array_get(arr, index);
 }
 
 var setToCenter = Transform.moveXY(100, 100);
 
 function look(speed, n, t) {
-  return goThroughSprites(Caml_int32.mod_(Js_math.floor_int(t / 6000 * speed), n), n);
+  return goThroughSprites(/* array */[
+              left,
+              straight,
+              right,
+              straight
+            ], Caml_int32.mod_(Js_math.floor_int(t / 6000 * speed), n), n);
 }
 
-function firstFace(t) {
-  return Transform.$less$neg$great(Transform.$less$neg$great(Transform.moveXY(wiggle(t), 0), setToCenter), look(10, 4, t));
-}
-
-function secondFace(t) {
-  return Transform.$less$neg$great(Transform.$less$neg$great(Transform.moveXY(0, waggle(t)), setToCenter), look(15, 4, t));
-}
-
-var lookB = Behavior.varied((function (param) {
-        return look(10, 4, param);
+var lookB = Behavior.varied((function (t) {
+        return Transform.drawSprite(doomFaces, look(10, 4, t));
       }));
 
 var setToCenterB = Behavior.moveXYB(Behavior.$$const(100), Behavior.$$const(100));
 
-var allTransforms = Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.$$const(20), Behavior.$$const(20)), Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0))), Behavior.saveTB(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0)), setToCenterB), lookB))), Behavior.saveTB(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.$$const(0), Behavior.varied(waggle)), setToCenterB), lookB)));
+function staticFace(param) {
+  return Transform.drawSprite(doomFaces, param);
+}
+
+function makeSmaller(f, o) {
+  return /* record */[
+          /* sx */o[/* sx */0],
+          /* sy */o[/* sy */1],
+          /* sw */o[/* sw */2],
+          /* sh */o[/* sh */3],
+          /* dw */o[/* dw */4] / f,
+          /* dh */o[/* dh */5] / f
+        ];
+}
+
+function startAt(x, y) {
+  return Behavior.moveXYB(Behavior.$$const(x), Behavior.$$const(y));
+}
+
+function multB(param, param$1) {
+  return Behavior.lift2((function (prim, prim$1) {
+                return prim * prim$1;
+              }), param, param$1);
+}
+
+function speedUp(n) {
+  var partial_arg = multB(Behavior.varied(n), Behavior.getTime);
+  return (function (param) {
+      return Behavior.timeTrans(partial_arg, param);
+    });
+}
+
+var allTransforms = Behavior.andThenB(Behavior.groupAnim(speedUp((function (t) {
+                  return 0.1 * Math.sin(2 * Math.PI * 2 * t / 6000);
+                }))(Behavior.andThenB(Behavior.andThenB(startAt(120, 10), Behavior.moveXYB(Behavior.varied(waggle), Behavior.$$const(20))), Behavior.$$const(staticFace(straight))))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.andThenB(startAt(20, 20), Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0)), setToCenterB), lookB))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.$$const(0), Behavior.varied(waggle)), setToCenterB), lookB)))));
 
 function animate() {
   window.requestAnimationFrame((function (param) {
@@ -86,6 +117,8 @@ function animate() {
 }
 
 animate(/* () */0);
+
+var $less$neg$great = Behavior.andThenB;
 
 exports.doomfacesImg = doomfacesImg;
 exports.doomFaces = doomFaces;
@@ -98,10 +131,14 @@ exports.waggle = waggle;
 exports.goThroughSprites = goThroughSprites;
 exports.setToCenter = setToCenter;
 exports.look = look;
-exports.firstFace = firstFace;
-exports.secondFace = secondFace;
 exports.lookB = lookB;
 exports.setToCenterB = setToCenterB;
+exports.staticFace = staticFace;
+exports.makeSmaller = makeSmaller;
+exports.startAt = startAt;
+exports.$less$neg$great = $less$neg$great;
+exports.multB = multB;
+exports.speedUp = speedUp;
 exports.allTransforms = allTransforms;
 exports.animate = animate;
 /* doomfacesImg Not a pure module */

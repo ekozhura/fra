@@ -20,14 +20,23 @@ let lift2 = (fn, behA, behB) =>
     }
   };
 
-let beh5 = const(5);
-
 let moveXYB = lift2(Transform.moveXY);
 let saveTB = lift1(tr => Transform.WrappedTransform(tr));
-
+let groupAnim = saveTB;
 let andThenB = lift2(Transform.andThen);
 let (<-+->) = andThenB;
 
 let getTransform =
   fun
   | Behavior(t) => t;
+
+let getTime: behavior(time) = Behavior(t => t);
+
+let timeTrans: (behavior(time), behavior('a)) => behavior('b) =
+  (behF, behA) =>
+    switch (behF) {
+    | Behavior(f) =>
+      switch (behA) {
+      | Behavior(a) => Behavior((t => a(f(t))))
+      }
+    };

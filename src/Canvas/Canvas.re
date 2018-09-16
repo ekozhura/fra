@@ -44,4 +44,6 @@ type sprite = {
   sy: float,
   sw: float,
   sh: float,
+  dw: float,
+  dh: float,
 };

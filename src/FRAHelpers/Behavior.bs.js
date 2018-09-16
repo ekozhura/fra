@@ -36,10 +36,6 @@ function lift2(fn, behA, behB) {
             })];
 }
 
-var beh5 = /* Behavior */[(function () {
-      return 5;
-    })];
-
 function moveXYB(param, param$1) {
   return lift2(Transform.moveXY, param, param$1);
 }
@@ -58,6 +54,20 @@ function getTransform(param) {
   return param[0];
 }
 
+var getTime = /* Behavior */[(function (t) {
+      return t;
+    })];
+
+function timeTrans(behF, behA) {
+  var a = behA[0];
+  var f = behF[0];
+  return /* Behavior */[(function (t) {
+              return Curry._1(a, Curry._1(f, t));
+            })];
+}
+
+var groupAnim = saveTB;
+
 var $less$neg$plus$neg$great = andThenB;
 
 exports.varied = varied;
@@ -65,10 +75,12 @@ exports.$$const = $$const;
 exports.lift0 = lift0;
 exports.lift1 = lift1;
 exports.lift2 = lift2;
-exports.beh5 = beh5;
 exports.moveXYB = moveXYB;
 exports.saveTB = saveTB;
+exports.groupAnim = groupAnim;
 exports.andThenB = andThenB;
 exports.$less$neg$plus$neg$great = $less$neg$plus$neg$great;
 exports.getTransform = getTransform;
+exports.getTime = getTime;
+exports.timeTrans = timeTrans;
 /* No side effect */

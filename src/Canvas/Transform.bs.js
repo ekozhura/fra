@@ -44,7 +44,7 @@ function runSingleTransform(ctx, _transform) {
           return /* () */0;
       case 2 : 
           var sprite = transform[1];
-          ctx.drawImage(transform[0], sprite[/* sx */0], sprite[/* sy */1], sprite[/* sw */2], sprite[/* sh */3], 0, 0, sprite[/* sw */2], sprite[/* sh */3]);
+          ctx.drawImage(transform[0], sprite[/* sx */0], sprite[/* sy */1], sprite[/* sw */2], sprite[/* sh */3], 0, 0, sprite[/* dw */4], sprite[/* dh */5]);
           return /* () */0;
       case 3 : 
           runSingleTransform(ctx, transform[0]);
@@ -64,14 +64,11 @@ function runAllTransforms(ctx, transform) {
   return runSingleTransform(ctx, /* WrappedTransform */Block.__(4, [transform]));
 }
 
-var $less$neg$great = andThen;
-
 exports.drawPic = drawPic;
 exports.drawSprite = drawSprite;
 exports.moveXY = moveXY;
 exports.andThen = andThen;
 exports.saveT = saveT;
-exports.$less$neg$great = $less$neg$great;
 exports.runSingleTransform = runSingleTransform;
 exports.runAllTransforms = runAllTransforms;
 /* No side effect */

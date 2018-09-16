@@ -3,6 +3,7 @@
 
 var Draw = require("./Canvas/Draw.bs.js");
 var Js_math = require("bs-platform/lib/js/js_math.js");
+var Behavior = require("./FRAHelpers/Behavior.bs.js");
 var Transform = require("./Canvas/Transform.bs.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
@@ -69,13 +70,17 @@ function secondFace(t) {
   return Transform.$less$neg$great(Transform.$less$neg$great(Transform.moveXY(0, waggle(t)), setToCenter), look(15, 4, t));
 }
 
-function allTransforms(t) {
-  return Transform.$less$neg$great(Transform.$less$neg$great(Transform.$less$neg$great(Transform.moveXY(20, 20), Transform.moveXY(wiggle(t), waggle(t))), Transform.saveT(firstFace(t))), Transform.saveT(secondFace(t)));
-}
+var lookB = Behavior.varied((function (param) {
+        return look(10, 4, param);
+      }));
+
+var setToCenterB = Behavior.moveXYB(Behavior.$$const(100), Behavior.$$const(100));
+
+var allTransforms = Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.$$const(20), Behavior.$$const(20)), Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0))), Behavior.saveTB(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0)), setToCenterB), lookB))), Behavior.saveTB(Behavior.$less$neg$plus$neg$great(Behavior.$less$neg$plus$neg$great(Behavior.moveXYB(Behavior.$$const(0), Behavior.varied(waggle)), setToCenterB), lookB)));
 
 function animate() {
   window.requestAnimationFrame((function (param) {
-          return Draw.drawEngine(allTransforms, param);
+          return Draw.drawEngineB(allTransforms, param);
         }));
   return /* () */0;
 }
@@ -95,6 +100,8 @@ exports.setToCenter = setToCenter;
 exports.look = look;
 exports.firstFace = firstFace;
 exports.secondFace = secondFace;
+exports.lookB = lookB;
+exports.setToCenterB = setToCenterB;
 exports.allTransforms = allTransforms;
 exports.animate = animate;
 /* doomfacesImg Not a pure module */

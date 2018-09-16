@@ -26,9 +26,9 @@ let rec runSingleTransform: (ctx, transform) => unit =
     | ComposedTransform(transformA, transformB) =>
       runSingleTransform(ctx, transformA);
       runSingleTransform(ctx, transformB);
-    | WrappedTransform(t) =>
+    | WrappedTransform(transform) =>
       ctx->save;
-      runSingleTransform(ctx, t);
+      runSingleTransform(ctx, transform);
       ctx->restore;
     };
 

@@ -14,3 +14,16 @@ let rec drawEngine = (allTransforms, t) => {
   Transform.runAllTransforms(ctx, allTransforms(t));
   requestAnimationFrame(drawEngine(allTransforms));
 };
+
+let rec drawEngineB = (allTransforms, t) => {
+  let ctx = elem->getContext;
+  ctx->globalCompositeOperation("multiply");
+  ctx->imageSmoothingEnabled(false);
+  ctx->clearRect(0., 0., 300., 300.);
+  ctx->save;
+  switch (allTransforms) {
+  | Behavior.Behavior(transform) => Transform.runAllTransforms(ctx, transform(t))
+  };
+
+  requestAnimationFrame(drawEngineB(allTransforms));
+};

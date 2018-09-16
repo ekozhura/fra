@@ -1,6 +1,6 @@
 open Canvas;
 open Transform;
-/*open Draw;*/
+open Behavior;
 
 let doomfacesImg: Js.t('a) = [%bs.raw "require('./../assets/Doomfaces.png')"];
 
@@ -28,11 +28,17 @@ let look = (speed, n, t) => goThroughSprites(Js_math.floor_int(t /. 6000. *. spe
 let firstFace = t => moveXY(wiggle(t), 0.) <-> setToCenter <-> look(10., 4, t);
 let secondFace = t => moveXY(0., waggle(t)) <-> setToCenter <-> look(15., 4, t);
 
-let allTransforms = t =>
-  moveXY(20., 20.) <-> moveXY(wiggle(t), waggle(t)) <-> saveT(firstFace(t)) <-> saveT(secondFace(t));
+let lookB = varied(look(10., 4));
+let setToCenterB = moveXYB(const(100.), const(100.));
+
+let allTransforms =
+  moveXYB(const(20.), const(20.))
+  <-+-> moveXYB(varied(wiggle), const(0.))
+  <-+-> saveTB(moveXYB(varied(wiggle), const(0.)) <-+-> setToCenterB <-+-> lookB)
+  <-+-> saveTB(moveXYB(const(0.), varied(waggle)) <-+-> setToCenterB <-+-> lookB);
 
 let animate = () => {
-  requestAnimationFrame(Draw.drawEngine(allTransforms)) |> ignore;
+  requestAnimationFrame(Draw.drawEngineB(allTransforms)) |> ignore;
   ();
 };
 

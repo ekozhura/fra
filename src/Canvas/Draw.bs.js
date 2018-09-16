@@ -24,7 +24,20 @@ function drawEngine(allTransforms, t) {
               }));
 }
 
+function drawEngineB(allTransforms, t) {
+  var ctx = elem.getContext("2d");
+  ctx.globalCompositeOperation = "multiply";
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, 300, 300);
+  ctx.save();
+  Transform.runAllTransforms(ctx, Curry._1(allTransforms[0], t));
+  return window.requestAnimationFrame((function (param) {
+                return drawEngineB(allTransforms, param);
+              }));
+}
+
 exports.renderSprite = renderSprite;
 exports.elem = elem;
 exports.drawEngine = drawEngine;
+exports.drawEngineB = drawEngineB;
 /* elem Not a pure module */

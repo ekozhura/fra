@@ -21,6 +21,10 @@ function moveXY(x, y) {
           ]);
 }
 
+function stretch(x) {
+  return /* Stretch */Block.__(4, [x]);
+}
+
 function andThen(transformA, transformB) {
   return /* ComposedTransform */Block.__(3, [
             transformA,
@@ -29,7 +33,7 @@ function andThen(transformA, transformB) {
 }
 
 function saveT(transform) {
-  return /* WrappedTransform */Block.__(4, [transform]);
+  return /* WrappedTransform */Block.__(5, [transform]);
 }
 
 function runSingleTransform(ctx, _transform) {
@@ -51,6 +55,10 @@ function runSingleTransform(ctx, _transform) {
           _transform = transform[1];
           continue ;
       case 4 : 
+          var f = transform[0];
+          ctx.scale(f, f);
+          return /* () */0;
+      case 5 : 
           ctx.save();
           runSingleTransform(ctx, transform[0]);
           ctx.restore();
@@ -61,12 +69,13 @@ function runSingleTransform(ctx, _transform) {
 }
 
 function runAllTransforms(ctx, transform) {
-  return runSingleTransform(ctx, /* WrappedTransform */Block.__(4, [transform]));
+  return runSingleTransform(ctx, /* WrappedTransform */Block.__(5, [transform]));
 }
 
 exports.drawPic = drawPic;
 exports.drawSprite = drawSprite;
 exports.moveXY = moveXY;
+exports.stretch = stretch;
 exports.andThen = andThen;
 exports.saveT = saveT;
 exports.runSingleTransform = runSingleTransform;

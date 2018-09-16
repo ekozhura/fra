@@ -105,9 +105,11 @@ function speedUp(n) {
     });
 }
 
-var allTransforms = Behavior.andThenB(Behavior.groupAnim(speedUp((function (t) {
-                  return 0.1 * Math.sin(2 * Math.PI * 2 * t / 6000);
-                }))(Behavior.andThenB(Behavior.andThenB(startAt(120, 10), Behavior.moveXYB(Behavior.varied(waggle), Behavior.$$const(20))), Behavior.$$const(staticFace(straight))))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.andThenB(startAt(20, 20), Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0)), setToCenterB), lookB))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.$$const(0), Behavior.varied(waggle)), setToCenterB), lookB)))));
+var stretchFun = Behavior.varied((function (t) {
+        return 0.5 + 0.5 * Math.sin(Math.PI * t / 6000);
+      }));
+
+var allTransforms = Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.andThenB(Behavior.andThenB(startAt(20, 20), Behavior.stretchB(stretchFun)), Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.varied(wiggle), Behavior.$$const(0)), setToCenterB), lookB))), Behavior.groupAnim(Behavior.andThenB(Behavior.andThenB(Behavior.moveXYB(Behavior.$$const(0), Behavior.varied(waggle)), setToCenterB), lookB))));
 
 function animate() {
   window.requestAnimationFrame((function (param) {
@@ -139,6 +141,7 @@ exports.startAt = startAt;
 exports.$less$neg$great = $less$neg$great;
 exports.multB = multB;
 exports.speedUp = speedUp;
+exports.stretchFun = stretchFun;
 exports.allTransforms = allTransforms;
 exports.animate = animate;
 /* doomfacesImg Not a pure module */

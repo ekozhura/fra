@@ -21,7 +21,8 @@ let lift2 = (fn, behA, behB) =>
   };
 
 let moveXYB = lift2(Transform.moveXY);
-let saveTB = lift1(tr => Transform.WrappedTransform(tr));
+let saveTB = lift1(Transform.saveT);
+let stretchB = lift1(Transform.stretch);
 let groupAnim = saveTB;
 let andThenB = lift2(Transform.andThen);
 let (<-+->) = andThenB;

@@ -20,6 +20,7 @@ let getById: string => canvasElement = [%bs.raw {|function(arg) {
 [@bs.send] external clearRect: (ctx, float, float, float, float) => unit = "";
 [@bs.send] external fillRect: (ctx, float, float, float, float) => unit = "";
 [@bs.send] external translate: (ctx, float, float) => unit = "";
+[@bs.send] external scale: (ctx, float, float) => unit = "";
 [@bs.send] external setTransform: (ctx, float, float, float, float, float, float) => unit = "";
 [@bs.send] external rotate: (ctx, float) => unit = "";
 [@bs.set] external fillStyle: (ctx, string) => unit = "";

@@ -12,15 +12,11 @@ let drawPic: imageElement => transform = el => RenderImage(el);
 let drawSprite: (imageElement, sprite) => transform = (el, sprite) => RenderSprite(el, sprite);
 let moveXY: (float, float) => transform = (x, y) => Translate(x, y);
 let stretch: float => transform = x => Stretch(x);
-let andThen: (transform, transform) => transform =
-  (transformA, transformB) => ComposedTransform(transformA, transformB);
-let saveT: transform => transform = transform => WrappedTransform(transform);
+let andThen: (transform, transform) => transform = (transformA, transformB) => ComposedTransform(transformA, transformB);
+let wrapT: transform => transform = transform => WrappedTransform(transform);
 
-/*let (<->) = andThen;*/
-
-let rec runSingleTransform: (ctx, transform) => unit =
-  (ctx, transform) =>
-    switch (transform) {
+let rec runSingleTransform = (ctx, transform) => {
+  switch (transform) {
     | Translate(x, y) => ctx->translate(x, y)
     | RenderImage(el) => ctx->drawImage(el, 0., 0.)
     | RenderSprite(image, sprite) =>
@@ -33,6 +29,7 @@ let rec runSingleTransform: (ctx, transform) => unit =
       ctx->save;
       runSingleTransform(ctx, transform);
       ctx->restore;
-    };
+  };
+};
 
-let runAllTransforms = (ctx, transform) => runSingleTransform(ctx, WrappedTransform(transform));
+let runAllTransforms = (ctx, transform) => runSingleTransform(ctx, wrapT(transform));

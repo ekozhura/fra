@@ -3,19 +3,33 @@ open Canvas;
 let renderSprite = (ctx: ctx, image: imageElement, sprite: sprite) =>
   ctx->(drawImageSprite(image, sprite.sx, sprite.sy, sprite.sw, sprite.sh, 0., 0., sprite.sw, sprite.sh));
 
-let elem = getById("canvas");
+let elem = elementToCanvasElement(getById("canvas"));
 
-let rec drawEngine = (allTransforms, t) => {
+Canvas.onEvent(getById("canvas"), "click", () => {
+  Js.log("click");
+});
+
+let drawStatic = allTransforms => {
+  let ctx = elem->getContext;
+  ctx->globalCompositeOperation("multiply");
+  ctx->imageSmoothingEnabled(false);
+  ctx->clearRect(0., 0., 300., 300.);
+  switch (allTransforms) {
+  | Behavior.Behavior(transform) => Transform.runAllTransforms(ctx, transform(0.))
+  };
+};
+
+let rec drawAnimation = (allTransforms, t) => {
   let ctx = elem->getContext;
   ctx->globalCompositeOperation("multiply");
   ctx->imageSmoothingEnabled(false);
   ctx->clearRect(0., 0., 300., 300.);
   ctx->save;
   Transform.runAllTransforms(ctx, allTransforms(t));
-  requestAnimationFrame(drawEngine(allTransforms));
+  requestAnimationFrame(drawAnimation(allTransforms));
 };
 
-let rec drawEngineB = (allTransforms, t) => {
+let rec drawAnimationB = (allTransforms, t) => {
   let ctx = elem->getContext;
   ctx->globalCompositeOperation("multiply");
   ctx->imageSmoothingEnabled(false);
@@ -25,9 +39,10 @@ let rec drawEngineB = (allTransforms, t) => {
   | Behavior.Behavior(transform) => Transform.runAllTransforms(ctx, transform(t))
   };
 
-  requestAnimationFrame(drawEngineB(allTransforms));
+  requestAnimationFrame(drawAnimationB(allTransforms));
 };
-let animate = allTransforms => {
-  requestAnimationFrame(drawEngineB(allTransforms)) |> ignore;
+
+let animate = (allTransforms) => {
+  requestAnimationFrame(drawAnimationB(allTransforms)) |> ignore;
   ();
 };

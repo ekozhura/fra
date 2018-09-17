@@ -31,3 +31,5 @@ dist/
 .cache
 .idea
 yarn.lock
+package-lock.json
+*.bs.js

@@ -1,5 +1,6 @@
 /* https://github.com/reasonml-community/reason-maze/blob/master/src/FFI/Canvas.re */
 
+type element;
 type canvasElement;
 type canvasRenderingContext2D;
 type ctx = canvasRenderingContext2D;
@@ -7,9 +8,14 @@ type animationFrameID;
 type imageElement;
 type date;
 
-let getById: string => canvasElement = [%bs.raw {|function(arg) {
+external elementToCanvasElement : element => canvasElement = "%identity";
+external elementToImageElement: element => imageElement = "%identity";
+
+let getById: string => element = [%bs.raw {|function(arg) {
   return document.getElementById(arg)
  }|}];
+
+[@bs.send] external onEvent: (element, string, unit => unit) => unit = "addEventListener";
 
 [@bs.set] external globalCompositeOperation: (ctx, string) => unit = "";
 [@bs.set] external imageSmoothingEnabled: (ctx, bool) => unit = "";

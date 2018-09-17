@@ -36,8 +36,16 @@ function drawEngineB(allTransforms, t) {
               }));
 }
 
+function animate(allTransforms) {
+  window.requestAnimationFrame((function (param) {
+          return drawEngineB(allTransforms, param);
+        }));
+  return /* () */0;
+}
+
 exports.renderSprite = renderSprite;
 exports.elem = elem;
 exports.drawEngine = drawEngine;
 exports.drawEngineB = drawEngineB;
+exports.animate = animate;
 /* elem Not a pure module */

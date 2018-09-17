@@ -2,7 +2,7 @@ open Canvas;
 
 type transform =
   | Translate(float, float)
-  | RenderImage(Canvas.imageElement)
+  | RenderImage(imageElement)
   | RenderSprite(imageElement, sprite)
   | ComposedTransform(transform, transform)
   | Stretch(float)

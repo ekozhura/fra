@@ -7,6 +7,7 @@ let varied = fn => Behavior(fn);
 let const = n => Behavior(_ => n);
 
 let lift0 = x => Behavior(_ => x);
+
 let lift1 = (fn, behA) =>
   switch (behA) {
   | Behavior(x) => Behavior((t => fn(x(t))))

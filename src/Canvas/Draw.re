@@ -27,3 +27,7 @@ let rec drawEngineB = (allTransforms, t) => {
 
   requestAnimationFrame(drawEngineB(allTransforms));
 };
+let animate = allTransforms => {
+  requestAnimationFrame(drawEngineB(allTransforms)) |> ignore;
+  ();
+};

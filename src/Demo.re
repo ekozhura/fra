@@ -37,25 +37,24 @@ let multB = lift2(( *. ));
 let speedUp = n => timeTrans(multB(varied(n), getTime));
 
 let stretchFun = varied(t => 0.5 +. 0.5 *. Js_math.sin(Js_math._PI *. t /. 6000.));
+
+let newTransform = const(staticFace(straight)) |> andThenB(moveXYB(varied(wiggle), const(20.)));
+
+/*let allTransforms = newTransform |> groupAnim;*/
+
 let allTransforms =
-  /*groupAnim(*/
-  /*startAt(120., 20.)*/
-  /*<-> moveXYB(varied(waggle), const(20.))*/
-  /*<-> const(staticFace(straight))*/
-  /*|> speedUp(_ => 2.),*/
-  /*)*/
-  /*<-> */
   groupAnim(
-    startAt(20., 20.)
-    <-> stretchB(stretchFun)
-    <-> moveXYB(varied(wiggle), const(0.))
-    <-> groupAnim(moveXYB(varied(wiggle), const(0.)) <-> setToCenterB <-> lookB)
-    <-> groupAnim(moveXYB(const(0.), varied(waggle)) <-> setToCenterB <-> lookB),
-  );
+    startAt(120., 20.)
+    <-> moveXYB(varied(waggle), const(20.))
+    <-> const(staticFace(straight))
+    |> speedUp(_ => 2.),
+  )
+  <-> groupAnim(
+        startAt(20., 20.)
+        <-> stretchB(stretchFun)
+        <-> moveXYB(varied(wiggle), const(0.))
+        <-> groupAnim(moveXYB(varied(wiggle), const(0.)) <-> setToCenterB <-> lookB)
+        <-> groupAnim(moveXYB(const(0.), varied(waggle)) <-> setToCenterB <-> lookB),
+      );
 
-let animate = () => {
-  requestAnimationFrame(Draw.drawEngineB(allTransforms)) |> ignore;
-  ();
-};
-
-animate();
+Draw.animate(allTransforms);

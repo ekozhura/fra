@@ -12,7 +12,7 @@ let setToCenter = moveXY(100., 100.);
 let look = (speed, n, t) =>
   goThroughSprites([|left, straight, right, straight|], Js_math.floor_int(t /. 6000. *. speed) mod n, n);
 
-let lookB = varied(t => drawSprite(doomFaces, look(10., 4, t)));
+let lookAroundB = varied(t => drawSprite(doomFaces, look(5., 4, t)));
 let setToCenterB = moveXYB(const(100.), const(100.));
 
 let staticFace = drawSprite(doomFaces);
@@ -40,22 +40,15 @@ let allTransforms =
     startAt(120., 20.)
     >=> stretchB(const(1.5))
     >=> moveXYB(varied(waggle), const(20.))
-    >=> const(staticFace(straight))
+    >=> lookAroundB
     |> speedUp(_ => 2.),
-  )
-  >=> groupAnim(
-        startAt(120., 120.)
-        >=> moveXYB(varied(waggle), const(20.))
-        >=> stretchB(const(1.5))
-        >=> const(staticFace(straight))
-        |> speedUp(_ => 2.),
-      );
+  );
 /* >=> groupAnim(
      startAt(20., 20.)
      >=> moveXYB(varied(wiggle), const(0.))
      >=> stretchB(const(0.5))
-     >=> groupAnim(moveXYB(varied(wiggle), const(0.)) >=> setToCenterB >=> lookB)
-     >=> groupAnim(moveXYB(const(0.), varied(waggle)) >=> setToCenterB >=> lookB),
+     >=> groupAnim(moveXYB(varied(wiggle), const(0.)) >=> setToCenterB >=> lookAroundB)
+     >=> groupAnim(moveXYB(const(0.), varied(waggle)) >=> setToCenterB >=> lookAroundB),
    ); */
 
 Draw.animate(allTransforms);

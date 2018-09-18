@@ -24,7 +24,7 @@ And open the browser - http://localhost:1234
 
 Check `main.re` for examples of animations
 
-Horizontal movement:
+- Horizontal movement:
 
 <img src="examples/doomface_horizontal.gif"/>
 
@@ -34,6 +34,20 @@ Horizontal movement:
     >=> stretchB(const(1.5))
     >=> moveXYB(varied(waggle), const(20.))
     >=> const(staticFace(straight))
+    |> speedUp(_ => 2.),
+  );
+```
+
+- Horizontal movement with look around animation:
+
+<img src="examples/doomface_horizontal_lookaround.gif"/>
+
+```js
+  groupAnim(
+    startAt(120., 20.)
+    >=> stretchB(const(1.5))
+    >=> moveXYB(varied(waggle), const(20.))
+    >=> lookAroundB
     |> speedUp(_ => 2.),
   );
 ```

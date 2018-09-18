@@ -17,7 +17,7 @@ To run examples:
 
 Then run parcel:
 
-`parcel ./src/index.html`
+`yarn start`
 
 And open the browser - http://localhost:1234
 

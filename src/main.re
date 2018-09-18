@@ -27,10 +27,10 @@ let newTransform = const(staticFace(straight)) |> andThenB(moveXYB(varied(wiggle
 
 /**
  * One thing to consider is that each transform affect the whole scene
- * So for example: 
+ * So for example:
  *      moveXYB(varied(wiggle), const(0.))
  *      >=> stretchB(const(0.5))
- * is not the same as: 
+ * is not the same as:
  *      stretchB(const(0.5))
  *      >=> moveXYB(varied(wiggle), const(0.))
  */
@@ -42,21 +42,21 @@ let allTransforms =
     >=> moveXYB(varied(waggle), const(20.))
     >=> const(staticFace(straight))
     |> speedUp(_ => 2.),
-  ) >=>
-  groupAnim(
-    startAt(120., 120.)
-    >=> moveXYB(varied(waggle), const(20.))
-    >=> stretchB(const(1.5))
-    >=> const(staticFace(straight))
-    |> speedUp(_ => 2.),
-  );
-  /* >=> groupAnim(
-        startAt(20., 20.)
-        >=> moveXYB(varied(wiggle), const(0.))
-        >=> stretchB(const(0.5))
-        >=> groupAnim(moveXYB(varied(wiggle), const(0.)) >=> setToCenterB >=> lookB)
-        >=> groupAnim(moveXYB(const(0.), varied(waggle)) >=> setToCenterB >=> lookB),
-      ); */
+  )
+  >=> groupAnim(
+        startAt(120., 120.)
+        >=> moveXYB(varied(waggle), const(20.))
+        >=> stretchB(const(1.5))
+        >=> const(staticFace(straight))
+        |> speedUp(_ => 2.),
+      );
+/* >=> groupAnim(
+     startAt(20., 20.)
+     >=> moveXYB(varied(wiggle), const(0.))
+     >=> stretchB(const(0.5))
+     >=> groupAnim(moveXYB(varied(wiggle), const(0.)) >=> setToCenterB >=> lookB)
+     >=> groupAnim(moveXYB(const(0.), varied(waggle)) >=> setToCenterB >=> lookB),
+   ); */
 
 Draw.animate(allTransforms);
 

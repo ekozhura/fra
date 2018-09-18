@@ -1,4 +1,5 @@
 ### Fra - functional reactive animation
+
 This repo contains my efforts to implement some concepts of Fran library in ReasonML.
 The library allows you to create some basic animations for HTML5 canvas.
 The work is in progress, current implementation lacks "reactivity", i.e., it doesn't react to DOM events.
@@ -21,4 +22,18 @@ Then run parcel:
 
 And open the browser - http://localhost:1234
 
-Check `Demo.re` for examples of animations
+Check `main.re` for examples of animations
+
+Horizontal movement:
+
+<img src="examples/doomface_horizontal.gif"/>
+
+```js
+  groupAnim(
+    startAt(120., 20.)
+    >=> stretchB(const(1.5))
+    >=> moveXYB(varied(waggle), const(20.))
+    >=> const(staticFace(straight))
+    |> speedUp(_ => 2.),
+  );
+```

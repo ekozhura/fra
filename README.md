@@ -16,7 +16,7 @@ To run examples:
 
 `yarn && yarn run build`
 
-Then run parcel:
+Then run web server:
 
 `yarn start`
 
@@ -29,7 +29,9 @@ Check `main.re` for examples of animations
 <img src="examples/doomface_horizontal.gif"/>
 
 ```js
-  groupAnim(
+let waggle = t => 60. *. Js_math.cos(2. *. Js_math._PI *. 2. *. t /. 6000.);
+
+let allTransforms = groupAnim(
     startAt(120., 20.)
     >=> stretchB(const(1.5))
     >=> moveXYB(varied(waggle), const(20.))
@@ -43,7 +45,9 @@ Check `main.re` for examples of animations
 <img src="examples/doomface_horizontal_lookaround.gif"/>
 
 ```js
-  groupAnim(
+let lookAroundB = varied(t => drawSprite(doomFaces, look(5., 4, t)));
+
+let allTransforms = groupAnim(
     startAt(120., 20.)
     >=> stretchB(const(1.5))
     >=> moveXYB(varied(waggle), const(20.))
